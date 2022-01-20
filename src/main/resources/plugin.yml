@@ -1,0 +1,5 @@
+name: minecraft-ender-dragon-elytra
+version: 1.0.0
+description: Grants an Elytra to the player that slays an Ender Dragon
+main: com.github.redcoracle.mede.Mede
+api-version: 1.18
