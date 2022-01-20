@@ -1,5 +1,7 @@
 package com.github.redcoracle.mede;
 
+import java.util.HashMap;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
@@ -25,7 +27,7 @@ public class Mede extends JavaPlugin implements Listener {
         HandlerList.unregisterAll((Plugin) this);
     }
 
-	@EventHandler
+    @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         if (event.getEntity() instanceof EnderDragon) {
             Player slaying_player = event.getEntity().getKiller();
@@ -33,7 +35,10 @@ public class Mede extends JavaPlugin implements Listener {
             World world = event.getEntity().getWorld();
 
             if (slaying_player.getInventory().firstEmpty() >= 0) {
-                slaying_player.getInventory().addItem(elytra);
+                HashMap added = slaying_player.getInventory().addItem(elytra);
+                if (!added.isEmpty()) {
+                    world.dropItem(slaying_player.getLocation(), elytra);
+                }
             } else {
                 world.dropItem(slaying_player.getLocation(), elytra);
             }
