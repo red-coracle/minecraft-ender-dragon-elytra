@@ -7,8 +7,7 @@ buildscript {
 apply plugin: 'java-library'
 
 repositories {
-    jcenter()
-
+    mavenCentral()
     maven {
         url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
     }
@@ -19,5 +18,5 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
 }

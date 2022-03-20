@@ -19,5 +19,5 @@ jobs:
     - name: Upload APK
       uses: actions/upload-artifact@v2
       with:
-        name: mede.jar
-        path: build/libs/minecraft-ender-dragon-elytra-*.jar
+        name: server-core.jar
+        path: build/libs/minecraft-server-core-*.jar
