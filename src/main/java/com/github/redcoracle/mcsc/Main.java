@@ -14,12 +14,18 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
 public class Main extends JavaPlugin implements Listener {
+    private static final HashSet<EntityType> explosion_entities = new HashSet<EntityType>() {{
+        add(EntityType.CREEPER);
+        add(EntityType.FIREBALL);
+        add(EntityType.WITHER_SKULL);
+    }};
 
     @Override
     public void onEnable() {
@@ -31,15 +37,9 @@ public class Main extends JavaPlugin implements Listener {
         HandlerList.unregisterAll((Plugin) this);
     }
 
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityExplode(final EntityExplodeEvent event) {
-        HashSet<EntityType> overrides = new HashSet<EntityType>() {{
-            add(EntityType.CREEPER);
-            add(EntityType.WITHER_SKULL);
-        }};
-
-        if (overrides.contains(event.getEntity().getType())) {
+        if (explosion_entities.contains(event.getEntity().getType())) {
             event.blockList().clear();
         }
     }
@@ -60,6 +60,17 @@ public class Main extends JavaPlugin implements Listener {
             } else {
                 world.dropItem(slaying_player.getLocation(), elytra);
             }
+        }
+    }
+
+    @EventHandler
+    public void onEntityTrample(final EntityInteractEvent event) {
+        if (event.getEntity() instanceof Player) {
+            return;
+        }
+
+        if (event.getBlock().getType() == Material.FARMLAND) {
+            event.setCancelled(true);
         }
     }
 }

@@ -16,7 +16,7 @@ jobs:
       uses: gradle/wrapper-validation-action@v1
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Upload APK
+    - name: Upload Jar
       uses: actions/upload-artifact@v2
       with:
         name: server-core.jar
