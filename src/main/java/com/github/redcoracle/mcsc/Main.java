@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,7 +39,7 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEntityExplode(final EntityExplodeEvent event) {
+    public void preventBlockExplosion(final EntityExplodeEvent event) {
         if (explosion_entities.contains(event.getEntity().getType())) {
             event.blockList().clear();
         }
@@ -46,7 +47,7 @@ public class Main extends JavaPlugin implements Listener {
 
     // Drop an Elytra when slaying the Ender Dragon
     @EventHandler
-    public void onEntityDeath(final EntityDeathEvent event) {
+    public void dropElytra(final EntityDeathEvent event) {
         if (event.getEntity() instanceof EnderDragon) {
             Player slaying_player = event.getEntity().getKiller();
             ItemStack elytra = new ItemStack(Material.ELYTRA);
@@ -63,8 +64,20 @@ public class Main extends JavaPlugin implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void recordDeathCoords(final PlayerDeathEvent event) {
+        Player p = event.getEntity();
+        this.getLogger().info(String.format(
+            "'%s' died at %s, %s, %s",
+            p.getName(),
+            p.getLocation().getBlockX(),
+            p.getLocation().getBlockY(),
+            p.getLocation().getBlockZ()
+        ));
+    }
+
     @EventHandler
-    public void onEntityTrample(final EntityInteractEvent event) {
+    public void preventCropTrample(final EntityInteractEvent event) {
         if (event.getEntity() instanceof Player) {
             return;
         }
