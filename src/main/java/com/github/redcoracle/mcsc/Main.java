@@ -12,10 +12,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -85,5 +87,17 @@ public class Main extends JavaPlugin implements Listener {
         if (event.getBlock().getType() == Material.FARMLAND) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void preventEndermanGriefing(EntityChangeBlockEvent event) {
+        if (event.getEntityType() == EntityType.ENDERMAN) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler()
+    public void logServerPing(ServerListPingEvent event) {
+        this.getLogger().info(String.format("Received server ping from '%s'", event.getAddress()));
     }
 }
